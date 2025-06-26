@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMS - Painel de Administrador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .header-gms {
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+        }
+        .header-gms .max-w-6xl {
+            max-width: 72rem;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-gms h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0;
+        }
+        .nav-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: #4B5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+        .nav-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-panel {
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 4rem;
+        }
+        .admin-panel h2 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 2rem;
+        }
+        .admin-panel p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            color: #4b5563;
+        }
+        .admin-buttons {
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .admin-btn {
+            background-color: #3b82f6;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        .admin-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        .btn-logout {
+            background-color: #dc2626;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-logout:hover {
+            background-color: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        /* Seções de gestão */
+        .management-section {
+            display: none; /* Oculto por padrão */
+            text-align: left;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .management-section h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+
+        /* Estilos para a lista de utilizadores */
+        #user-list li {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 1.1rem;
+            color: #374151;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        #user-list li span {
+            margin-bottom: 0.25rem;
+        }
+        #user-list li:last-child {
+            margin-bottom: 0;
+        }
+        #user-list li strong {
+            color: #1f2937;
+        }
+        @media (min-width: 640px) {
+            #user-list li {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            #user-list li span {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-gms">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1>GMS</h1>
+            <nav class="space-x-2" id="main-nav">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="sobre.html" class="nav-btn">Sobre</a>
+                <a href="carrinho.html" class="nav-btn">Carrinho</a>
+                <a href="admin.html" class="nav-btn active" id="admin-nav-btn">Administrador</a>
+                <a href="contacto.html" class="nav-btn">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-panel">
+        <h2>Bem-vindo, Administrador!</h2>
+        <p>Aqui você pode gerir os utilizadores da sua loja GMS.</p>
+
+        <div class="admin-buttons">
+            <button id="show-users-btn" class="admin-btn">Gerir Utilizadores</button>
+            <button id="logout-btn" class="btn-logout">Sair (Admin)</button>
+        </div>
+
+        <section id="users-section" class="management-section">
+            <h3>Utilizadores Registados</h3>
+            <ul id="user-list">
+            </ul>
+            <p id="no-users-message" class="text-gray-500 mt-4" style="display: none;">Não há utilizadores registados ainda.</p>
+        </section>
+    </div>
+
+    <script>
+        // --- Proteção de Rota e Lógica de Navegação ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn'); // Obtém o status de administrador do localStorage.
+            const adminNavBtn = document.getElementById('admin-nav-btn'); // Seleciona o botão de navegação "Administrador".
+            const allManagementSections = document.querySelectorAll('.management-section'); // Seleciona todas as seções com a classe 'management-section'.
+
+            // Redireciona se o utilizador não for um administrador logado.
+            if (isAdminLoggedIn !== 'true') { // Verifica se o valor em localStorage para 'isAdminLoggedIn' NÃO é 'true'.
+                window.location.href = 'index.html'; // Redireciona o utilizador para a página inicial ('index.html').
+                return; // Interrompe a execução do script para evitar que o conteúdo do painel de administração seja carregado.
+            }
+
+            // Ativa o botão de navegação "Administrador" se ele existir.
+            if (adminNavBtn) { // Verifica se o 'adminNavBtn' foi encontrado.
+                adminNavBtn.classList.add('active'); // Adiciona a classe 'active' ao botão, o que geralmente altera sua aparência para indicar que é a página atual.
+            }
+
+            // Lógica para o botão "Sair (Admin)".
+            document.getElementById('logout-btn').addEventListener('click', function() { // Adiciona um ouvinte de evento de clique ao botão com o ID 'logout-btn'.
+                localStorage.removeItem('isAdminLoggedIn'); // Remove a flag de administrador do localStorage.
+                sessionStorage.removeItem('loggedInUserName'); // Remove o nome do utilizador logado da sessionStorage.
+                window.location.href = 'index.html'; // Redireciona o utilizador de volta para a página inicial após o logout.
+            });
+
+            // --- Funções para gerir a visibilidade das seções ---
+            /**
+             * Oculta todas as seções de gestão no painel do administrador.
+             */
+            function hideAllSections() {
+                allManagementSections.forEach(section => { // Itera sobre cada seção de gestão encontrada.
+                    section.style.display = 'none'; // Define a propriedade CSS 'display' de cada seção para 'none', tornando-a invisível.
+                });
+            }
+
+            /**
+             * Exibe uma seção de gestão específica e oculta todas as outras.
+             * @param {string} sectionId - O ID da seção HTML a ser exibida (e.g., 'users-section').
+             */
+            function showSection(sectionId) {
+                hideAllSections(); // Primeiro, oculta todas as seções para garantir que apenas uma esteja visível por vez.
+                document.getElementById(sectionId).style.display = 'block'; // Define a propriedade CSS 'display' da seção especificada para 'block', tornando-a visível.
+            }
+
+            // --- Gestão de Utilizadores ---
+            const usersBtn = document.getElementById('show-users-btn'); // Seleciona o botão "Gerir Utilizadores".
+            const userList = document.getElementById('user-list'); // Seleciona a lista (<ul>) onde os utilizadores registados serão exibidos.
+            const noUsersMessageUserSection = document.getElementById('no-users-message'); // Seleciona a mensagem a ser exibida quando não há utilizadores.
+
+            /**
+             * Renderiza (exibe) a lista de utilizadores registados na interface.
+             * Os dados dos utilizadores são carregados do localStorage.
+             */
+            function renderUsers() {
+                userList.innerHTML = ''; // Limpa qualquer conteúdo existente na lista de utilizadores para evitar duplicações.
+                const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || []; // Recupera a lista de utilizadores do localStorage. Se não houver, inicializa como um array vazio.
+
+                if (registeredUsers.length === 0) { // Se não houver utilizadores registados:
+                    noUsersMessageUserSection.style.display = 'block'; // Exibe a mensagem "Não há utilizadores registados ainda.".
+                } else { // Se houver utilizadores:
+                    noUsersMessageUserSection.style.display = 'none'; // Oculta a mensagem de "nenhum utilizador".
+                    registeredUsers.forEach(user => { // Itera sobre cada utilizador no array 'registeredUsers'.
+                        const listItem = document.createElement('li'); // Cria um novo elemento de lista (<li>) para cada utilizador.
+                        listItem.innerHTML = `
+                            <span><strong>Nome:</strong> ${user.name}</span>
+                            <span><strong>Email:</strong> ${user.email}</span>
+                            <button class="text-red-600 hover:text-red-800 ml-auto" onclick="deleteUser('${user.email}')">Remover</button>
+                        `; // Define o conteúdo HTML do item da lista, incluindo o nome, email do utilizador e um botão "Remover".
+                        userList.appendChild(listItem); // Adiciona o item da lista (<li>) à lista de utilizadores (<ul>).
+                    });
+                }
+            }
+
+            // Adiciona um ouvinte de evento de clique ao botão "Gerir Utilizadores".
+            usersBtn.addEventListener('click', function() {
+                showSection('users-section'); // Exibe a seção de gestão de utilizadores.
+                renderUsers(); // Chama a função para carregar e exibir a lista de utilizadores.
+            });
+
+            /**
+             * Remove um utilizador registado do localStorage.
+             * @param {string} email - O email do utilizador a ser removido.
+             */
+            window.deleteUser = function(email) { // Torna a função global para que possa ser chamada por 'onclick' no HTML.
+                if (confirm(`Tem certeza que deseja remover o utilizador com email: ${email}?`)) { // Exibe uma caixa de confirmação antes de remover o utilizador.
+                    let users = JSON.parse(localStorage.getItem('registeredUsers')) || []; // Carrega a lista atual de utilizadores do localStorage.
+                    users = users.filter(user => user.email !== email); // Filtra a lista, criando uma nova lista que exclui o utilizador com o email fornecido.
+                    localStorage.setItem('registeredUsers', JSON.stringify(users)); // Salva a lista de utilizadores atualizada (sem o utilizador removido) de volta no localStorage.
+                    alert(`Utilizador ${email} removido com sucesso.`); // Exibe um alerta de sucesso.
+                    renderUsers(); // Chama 'renderUsers' novamente para atualizar a lista exibida no painel.
+                }
+            };
+
+            // Inicialmente, oculta todas as seções de gestão quando a página carrega.
+            hideAllSections();
+            // Opcional: Para exibir a seção de utilizadores por padrão ao carregar a página de administração:
+            // showSection('users-section');
+            // renderUsers();
+        });
+    </script>
+</body>
+</html>

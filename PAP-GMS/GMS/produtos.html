@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GMS - Produtos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        .btn-primary {
+            background-color: #333;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .btn-primary:hover {
+            background-color: #555;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: #4B5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+        .nav-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <header class="bg-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">GMS</h1>
+            <nav class="space-x-2">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="produtos.html" class="nav-btn active">Produtos</a>
+                <a href="carrinho.html" class="nav-btn">Carrinho</a>
+                <a href="login.html" class="nav-btn">Login</a>
+                <a href="contacto.html" class="nav-btn">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto mt-16 p-4">
+        <h2 class="text-5xl font-extrabold text-center mb-12 text-gray-900">Todas as T-shirts</h2>
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-16">
+            <div class="product-card">
+                <div> <img src="img/tshirt-branca-frente.jpg" alt="T-shirt Branca GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "C'est la vie"</h3>
+                    <p class="text-gray-600 mt-2">Conforto e versatilidade para qualquer ocasião. Veste a tua atitude com estilo.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€19.99</p>
+                </div>
+                <a href="tshirt-branca.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+
+            <div class="product-card">
+                <div> <img src="img/tshirt-preta-frente.jpg" alt="T-shirt Preta GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "No Pressure"</h3>
+                    <p class="text-gray-600 mt-2">Elegância e modernidade no seu dia a dia. Perfeita para um look minimalista.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€21.99</p>
+                </div>
+                <a href="tshirt-preta.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+
+            <div class="product-card">
+                <div> <img src="img/tshirt-beje-frente.jpg" alt="T-shirt Bege GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "Free"</h3>
+                    <p class="text-gray-600 mt-2">A combinação perfeita para um estilo descontraído e leve. Sinta-se livre para ser quem és.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€18.50</p>
+                </div>
+                <a href="tshirt-bege.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+
+            <div class="product-card">
+                <div> <img src="img/tshirt-azul-frente.jpg" alt="T-shirt Azul Marinho GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "Infinite"</h3>
+                    <p class="text-gray-600 mt-2">Um design que te leva para o infinito. Perfeita para um look sofisticado e casual.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€22.50</p>
+                </div>
+                <a href="tshirt-azul.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+
+            <div class="product-card">
+                <div> <img src="img/tshirt-verde-frente.jpg" alt="T-shirt Verde Oliva GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "Nature"</h3>
+                    <p class="text-gray-600 mt-2">Um toque de natureza para o seu guarda-roupa. Conecte-se com o seu lado mais natural.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€20.00</p>
+                </div>
+                <a href="tshirt-verde.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+
+            <div class="product-card">
+                <div> <img src="img/tshirt-cinza-frente.jpg" alt="T-shirt Cinza Mescla GMS" class="rounded-xl mb-4 w-full h-auto object-cover" />
+                    <h3 class="text-2xl font-bold text-gray-900">T-shirt "GMS Essential"</h3>
+                    <p class="text-gray-600 mt-2">Ideal para o dia a dia, com conforto extra. A peça essencial que não pode faltar.</p>
+                    <p class="mt-4 font-extrabold text-2xl text-gray-900">€17.99</p>
+                </div>
+                <a href="tshirt-cinza.html" class="mt-6 w-full btn-primary text-center block">Ver Produto</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white mt-20 py-8 shadow-inner text-center text-gray-600 text-sm">
+        © 2025 GMS. Todos os direitos reservados.
+    </footer>
+</body>
+</html>
