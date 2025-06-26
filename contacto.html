@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GMS - Contacto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados que complementam ou sobrescrevem o Tailwind CSS */
+        body {
+            font-family: 'Poppins', sans-serif; /* Define a fonte principal para o corpo do documento. */
+            background-color: #f3f4f6; /* Define uma cor de fundo cinza claro para toda a página. */
+            color: #4b5563; /* Define a cor do texto padrão para um tom de cinza escuro. */
+            line-height: 1.7; /* Ajusta a altura da linha para melhorar a legibilidade. */
+        }
+        
+        /* Estilos para os botões de navegação no header */
+        .nav-btn {
+            display: inline-block; /* Permite que os botões se comportem como blocos, mas flutuem em linha. */
+            padding: 0.5rem 1rem; /* Adiciona preenchimento interno. */
+            border-radius: 9999px; /* Arredonda completamente as bordas para um formato de pílula. */
+            background-color: transparent; /* Fundo transparente. */
+            color: #4B5563; /* Cor do texto cinza. */
+            font-weight: 500; /* Peso da fonte semi-bold. */
+            transition: all 0.3s ease; /* Aplica uma transição suave para todas as propriedades CSS em 0.3 segundos. */
+            text-decoration: none; /* Remove o sublinhado padrão dos links. */
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6; /* Muda o fundo para um cinza muito claro ao passar o mouse. */
+            color: #1F2937; /* Muda a cor do texto para um cinza escuro ao passar o mouse. */
+        }
+        .nav-btn.active {
+            background-color: #333; /* Fundo preto para o botão ativo. */
+            color: #fff; /* Texto branco para o botão ativo. */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra para destacá-lo. */
+        }
+        
+        /* Estilos do cabeçalho */
+        .header-gms {
+            background-color: #fff; /* Fundo branco para o cabeçalho. */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave abaixo do cabeçalho. */
+            padding: 1rem; /* Adiciona preenchimento interno. */
+            position: sticky; /* Torna o cabeçalho "pegajoso" (permanece visível no topo ao rolar). */
+            top: 0; /* Posiciona-o no topo. */
+            z-index: 50; /* Garante que o cabeçalho fique acima de outros elementos. */
+        }
+        .header-gms .max-w-6xl {
+            max-width: 72rem; /* Define a largura máxima do conteúdo dentro do cabeçalho. */
+            margin-left: auto; /* Centraliza o conteúdo horizontalmente. */
+            margin-right: auto; /* Centraliza o conteúdo horizontalmente. */
+            display: flex; /* Usa flexbox para o layout interno. */
+            justify-content: space-between; /* Distribui os itens (título e navegação) com espaço entre eles. */
+            align-items: center; /* Alinha os itens verticalmente ao centro. */
+        }
+        .header-gms h1 {
+            font-size: 2.5rem; /* Tamanho da fonte grande para o título "GMS". */
+            font-weight: 700; /* Peso da fonte bold. */
+            color: #1a202c; /* Cor do texto muito escuro. */
+            margin-bottom: 0; /* Remove qualquer margem inferior padrão. */
+        }
+        
+        /* --- Estilos para os Cartões de Contacto e Redes Sociais --- */
+        .contact-card-container {
+            background-color: #fff; /* Fundo branco para o contêiner principal dos cartões de contacto. */
+            border-radius: 2rem; /* Bordas arredondadas. */
+            padding: 4rem; /* Grande preenchimento interno. */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Sombra proeminente para destacá-lo. */
+            text-align: center; /* Centraliza o texto. */
+        }
+        .contact-card {
+            background-color: #f9fafb; /* Fundo cinza muito claro para os cartões individuais. */
+            padding: 2.5rem; /* Preenchimento interno. */
+            border-radius: 1.5rem; /* Bordas arredondadas. */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra suave. */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave para efeitos de hover. */
+            height: 100%; /* Garante que todos os cartões na mesma linha tenham a mesma altura. */
+            display: flex; /* Usa flexbox para o layout interno. */
+            flex-direction: column; /* Organiza os itens em coluna. */
+            justify-content: center; /* Centraliza o conteúdo verticalmente. */
+            align-items: center; /* Centraliza o conteúdo horizontalmente. */
+            text-align: center; /* Centraliza o texto. */
+        }
+        .contact-card:hover {
+            transform: translateY(-8px); /* Move o cartão ligeiramente para cima ao passar o mouse. */
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1); /* Aumenta a sombra para um efeito de "elevação". */
+        }
+        .contact-card svg {
+            color: #374151; /* Cor do ícone cinza escuro. */
+            margin-bottom: 1rem; /* Margem abaixo do ícone. */
+        }
+        .contact-card h3 {
+            font-size: 1.75rem; /* Tamanho da fonte grande para os títulos dos cartões. */
+            font-weight: 700; /* Peso da fonte bold. */
+            color: #1f2937; /* Cor do texto muito escuro. */
+            margin-bottom: 0.5rem; /* Margem abaixo do título. */
+        }
+        .contact-card p {
+            font-size: 1rem; /* Tamanho da fonte padrão para os parágrafos. */
+            color: #4b5563; /* Cor do texto cinza. */
+        }
+        .contact-card a {
+            color: #2563eb; /* Cor do texto azul para links. */
+            text-decoration: none; /* Remove o sublinhado padrão dos links. */
+            font-weight: 600; /* Peso da fonte semi-bold. */
+            transition: color 0.3s ease; /* Transição suave para a cor do link. */
+        }
+        .contact-card a:hover {
+            color: #1e40af; /* Muda a cor do texto para um azul mais escuro ao passar o mouse. */
+            text-decoration: underline; /* Adiciona sublinhado ao passar o mouse. */
+        }
+
+        .social-card {
+            background-color: #f0f4f8; /* Fundo cinza azulado claro para os cartões de redes sociais. */
+            padding: 2rem; /* Preenchimento interno. */
+            border-radius: 1.5rem; /* Bordas arredondadas. */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Transição suave para efeitos de hover. */
+        }
+        .social-card:hover {
+            transform: translateY(-5px); /* Move o cartão ligeiramente para cima ao passar o mouse. */
+            background-color: #e2e8f0; /* Muda o fundo para um cinza azulado um pouco mais escuro. */
+        }
+        .social-card a {
+            display: flex; /* Usa flexbox para organizar o conteúdo interno. */
+            flex-direction: column; /* Organiza os itens em coluna. */
+            align-items: center; /* Centraliza os itens horizontalmente. */
+            text-decoration: none; /* Remove o sublinhado. */
+            color: #1f2937; /* Cor do texto escuro. */
+            font-weight: 600; /* Peso da fonte semi-bold. */
+        }
+        .social-card svg {
+            color: #374151; /* Cor do ícone cinza escuro. */
+            transition: color 0.3s ease; /* Transição suave para a cor do ícone. */
+        }
+        .social-card:hover svg {
+            color: #000; /* Muda a cor do ícone para preto ao passar o mouse. */
+        }
+        
+        @media (max-width: 1024px) { /* Media query para telas com largura máxima de 1024px (tablets e menores) */
+            .contact-card-container {
+                padding: 2.5rem; /* Reduz o preenchimento interno do contêiner principal para telas menores. */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="header-gms">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">GMS</h1>
+            <nav class="space-x-2" id="main-nav">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="sobre.html" class="nav-btn">Sobre</a>
+                <a href="carrinho.html" class="nav-btn">Carrinho</a>
+                <span id="user-info" class="text-gray-700 font-semibold mr-2"></span>
+                <a href="login.html" class="nav-btn" id="login-btn">Login</a>
+                <a href="contacto.html" class="nav-btn active">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto mt-16 p-4">
+        <section class="contact-card-container">
+            <h2 class="text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                Fale Connosco
+            </h2>
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+                Estamos sempre disponíveis para o ajudar. Escolha a melhor forma de nos contactar.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="contact-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <h3>Email</h3>
+                    <p class="text-lg">gmsstore294@gmail.com</p>
+                    <p class="text-sm mt-2 text-gray-500">Envie-nos a sua dúvida ou sugestão.</p>
+                </div>
+
+                <div class="contact-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <h3>Telefone</h3>
+                    <p class="text-lg">+351 932 077 225</p>
+                    <p class="text-sm mt-2 text-gray-500">Para um contacto mais rápido.</p>
+                </div>
+                
+                <div class="contact-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9.247a1.25 1.25 0 100-2.494 1.25 1.25 0 000 2.494zM10.857 11.233a1.25 1.25 0 100-2.494 1.25 1.25 0 000 2.494zM14.773 11.233a1.25 1.25 0 100-2.494 1.25 1.25 0 000 2.494zM16.92 9.247a1.25 1.25 0 100-2.494 1.25 1.25 0 000 2.494zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/>
+                    </svg>
+                    <h3>Ajuda e FAQs</h3>
+                    <p class="text-lg">Tire as suas dúvidas</p>
+                    <p class="text-sm mt-2 text-gray-500">
+                        Consulte a nossa secção de <a href="sobre.html" class="text-blue-600 font-bold hover:underline">Perguntas Frequentes</a>.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-100 rounded-3xl p-10 mt-16">
+                <h3 class="text-4xl font-bold text-gray-900 mb-8">Siga-nos nas Redes Sociais</h3>
+                <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-10">
+                    Acompanhe as últimas coleções, promoções e novidades exclusivas.
+                    Siga-nos e faça parte da comunidade GMS!
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div class="social-card">
+                        <a href="https://www.instagram.com/g.m.s_02/" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                            </svg>
+                            <span class="text-lg mt-2">Instagram</span>
+                        </a>
+                    </div>
+                    <div class="social-card">
+                        <a href="https://x.com/_gmsstore294_" target="_blank">
+                            <svg class="h-16 w-16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.21-6.873L4.925 21.75H1.616l7.305-8.35L2.51 2.25H8.027l4.642 6.1L18.244 2.25zm-.308 1.342l-5.707 7.53L4.237 2.907H3.62L10.236 17.79h1.309L18.244 3.592h-.308z"/>
+                            </svg>
+                            <span class="text-lg mt-2">Twitter (X)</span>
+                        </a>
+                    </div>
+                    <div class="social-card">
+                        <a href="https://wa.me/351932077225" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.6-3.879-1.6-6.043C.144 6.111 6.11 0 13.594 0c3.084 0 5.955 1.144 8.16 3.01c2.195 1.869 3.393 4.417 3.393 7.204 0 7.82-6.326 14.16-14.12 14.16h-.005c-1.921 0-3.8-.474-5.467-1.378l-6.19 1.63zM13.594 2.215c-6.241 0-11.332 5.093-11.332 11.332 0 2.152.616 4.193 1.782 5.965l-1.096 4.004 4.077-1.077c1.776.99 3.774 1.516 5.61 1.516h.005c6.23 0 11.31-5.08 11.31-11.319 0-2.827-1.09-5.474-3.04-7.426C19.066 3.303 16.42 2.215 13.594 2.215zm-3.085 7.15c-.297-.15-.769-.364-.897-.386-.127-.021-.213-.021-.301.021-.089.043-.346.386-.423.463-.077.077-.149.083-.277.031-.127-.052-.533-.197-1.015-.625-.373-.343-.625-.824-.698-.949-.074-.124-.007-.179.052-.236.046-.046.103-.121.155-.181.052-.06.069-.103.104-.171.036-.068.018-.129-.007-.181-.026-.052-.236-.576-.322-.789-.086-.213-.173-.185-.25-.189-.077-.004-.169-.004-.26-.004s-.234.01-.358.171c-.125.161-.479.47-.646.63-.167.159-.344.364-.522.568-.178.204-.367.433-.699.722-.332.29-.687.581-1.314.897-.627.316-1.12.485-1.463.557-.344.072-.66.035-.776-.035-.115-.071-.277-.159-.444-.247-.167-.089-.317-.066-.433.052-.116.116-.277.247-.417.375-.14.129-.276.26-.413.386-.14.127-.291.295-.15.543.14.248.675.921.815 1.08.14.158.287.234.463.346.177.112.355.197.542.285.187.087.367.164.699.252.332.088.75.066 1.038-.043.287-.109.95-.395 1.815-.833.865-.438 1.458-.916 1.708-1.259.25-.343.401-.787.284-1.035z"/>
+                            </svg>
+                            <span class="text-lg mt-2">WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-white mt-20 py-8 shadow-inner text-center text-gray-600 text-sm">
+        © 2025 GMS. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        // --- Lógica de Login e Nome do Utilizador ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainNav = document.getElementById('main-nav');
+            const loginBtn = document.getElementById('login-btn');
+            const userInfoSpan = document.getElementById('user-info');
+
+            function updateLoginDisplay() {
+                const loggedInUserName = sessionStorage.getItem('loggedInUserName');
+                const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn');
+
+                let existingLogoutBtn = document.getElementById('logout-btn');
+                if (existingLogoutBtn) { existingLogoutBtn.remove(); }
+                let existingAdminBtn = document.getElementById('admin-btn');
+                if (existingAdminBtn) { existingAdminBtn.remove(); }
+
+                if (loggedInUserName) {
+                    userInfoSpan.textContent = `Olá, ${loggedInUserName}!`;
+                    loginBtn.style.display = 'none';
+
+                    const logoutButton = document.createElement('a');
+                    logoutButton.href = "#";
+                    logoutButton.classList.add('nav-btn');
+                    logoutButton.id = 'logout-btn';
+                    logoutButton.textContent = "Sair";
+                    logoutButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        sessionStorage.removeItem('loggedInUserName');
+                        localStorage.removeItem('isAdminLoggedIn');
+                        alert('Sessão encerrada.');
+                        window.location.reload();
+                    });
+                    // Insere o botão de logout antes do botão de Contacto.
+                    mainNav.insertBefore(logoutButton, mainNav.querySelector('a[href="contacto.html"]'));
+
+                    if (isAdminLoggedIn === 'true') {
+                        const adminButton = document.createElement('a');
+                        adminButton.href = "admin.html";
+                        adminButton.classList.add('nav-btn');
+                        adminButton.id = 'admin-btn';
+                        adminButton.textContent = "Administrador";
+                        mainNav.insertBefore(adminButton, logoutButton);
+                    }
+                } else {
+                    userInfoSpan.textContent = '';
+                    loginBtn.style.display = 'inline-block';
+                }
+            }
+            updateLoginDisplay();
+        });
+    </script>
+</body>
+</html>

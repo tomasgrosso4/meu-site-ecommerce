@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GMS - Carrinho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary {
+            background-color: #333;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background-color: #555;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .nav-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: #4B5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap; /* Added to prevent line breaks in navigation buttons */
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+        .nav-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos do Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .payment-option:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        .payment-option.selected {
+            border-color: #333;
+            background-color: #f0f0f0;
+            box-shadow: 0 0 0 2px #333;
+        }
+        .payment-option input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        /* Mensagens de feedback */
+        .feedback-message {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        .feedback-message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .feedback-message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <header class="bg-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">GMS</h1>
+            <nav class="space-x-2 flex items-center" id="main-nav">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="sobre.html" class="nav-btn">Sobre</a>
+                <a href="carrinho.html" class="nav-btn active">Carrinho</a>
+                <span id="user-info" class="text-gray-700 font-semibold ml-4 mr-2"></span>
+                <a href="login.html" class="nav-btn" id="login-btn">Login</a>
+                <a href="contacto.html" class="nav-btn" id="contact-btn-static">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto mt-16 p-4">
+        <section class="bg-white rounded-3xl p-8 shadow-lg">
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-6 text-center">O seu Carrinho de Compras</h2>
+
+            <div id="empty-cart-message" class="text-center text-gray-600 mb-4 hidden">O seu carrinho está vazio.</div>
+
+            <div id="cart-items" class="space-y-6 mb-8">
+                </div>
+
+            <div class="text-right text-2xl font-bold text-gray-900 mb-8">
+                Total: <span id="cart-total">€0.00</span>
+            </div>
+
+            <div id="feedbackMessage" class="feedback-message hidden"></div> <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="produtos.html" class="btn-primary bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-900">Continuar Comprando</a>
+                <button id="checkout-button" class="btn-primary" disabled>Finalizar Compra</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white mt-20 py-8 shadow-inner text-center text-gray-600 text-sm">
+        © 2025 GMS. Todos os direitos reservados.
+    </footer>
+
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">Selecionar Método de Pagamento</h3>
+            
+            <div class="mb-6">
+                <div class="payment-option" data-method="credit_card">
+                    <input type="radio" id="credit-card" name="payment-method" value="credit_card" checked>
+                    <label for="credit-card" class="font-medium text-lg flex-grow">Cartão de Crédito</label>
+                    <img src="https://img.icons8.com/color/48/visa.png" alt="Visa" class="h-8">
+                    <img src="https://img.icons8.com/color/48/mastercard-logo.png" alt="Mastercard" class="h-8">
+                </div>
+                <div class="payment-option" data-method="mbway">
+                    <input type="radio" id="mbway" name="payment-method" value="mbway">
+                    <label for="mbway" class="font-medium text-lg flex-grow">MB Way</label>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/MB_Way_Logo.svg/200px-MB_Way_Logo.svg.png" alt="MB Way" class="h-8">
+                </div>
+                <div class="payment-option" data-method="paypal">
+                    <input type="radio" id="paypal" name="payment-method" value="paypal">
+                    <label for="paypal" class="font-medium text-lg flex-grow">PayPal</label>
+                    <img src="https://img.icons8.com/color/48/paypal.png" alt="PayPal" class="h-8">
+                </div>
+            </div>
+
+            <button id="confirm-payment-button" class="btn-primary w-full">Confirmar Pagamento</button>
+        </div>
+    </div>
+
+    <script>
+        // Referências aos elementos do DOM
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const checkoutButton = document.getElementById('checkout-button');
+        const checkoutModal = document.getElementById('checkout-modal');
+        const closeModalButton = document.querySelector('.close-button');
+        const confirmPaymentButton = document.getElementById('confirm-payment-button');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const feedbackMessage = document.getElementById('feedbackMessage'); // Elemento para feedback
+
+        // Adicionado para a lógica de login/logout no cabeçalho
+        const mainNav = document.getElementById('main-nav'); // Seleciona o elemento de navegação principal.
+        const loginBtn = document.getElementById('login-btn'); // Seleciona o botão de login.
+        const userInfoSpan = document.getElementById('user-info'); // Seleciona o span onde o nome do utilizador logado será exibido.
+        const contactBtnStatic = document.getElementById('contact-btn-static'); // Seleciona o botão de contacto estático
+
+        /**
+         * Atualiza a exibição da navegação com base no estado de login do utilizador.
+         * Exibe o nome do utilizador, um botão de logout e, se for admin, um botão de administrador.
+         */
+        function updateLoginDisplay() {
+            // Recupera o nome do utilizador logado da sessionStorage.
+            const loggedInUserName = sessionStorage.getItem('loggedInUserName');
+            // Recupera o estado de administrador do localStorage.
+            const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn');
+
+            // Remove botões de logout e administrador existentes para evitar duplicação em atualizações.
+            let existingLogoutBtn = document.getElementById('logout-btn');
+            if (existingLogoutBtn) { existingLogoutBtn.remove(); }
+            let existingAdminBtn = document.getElementById('admin-btn');
+            if (existingAdminBtn) { existingAdminBtn.remove(); }
+
+            if (loggedInUserName) { // Se um nome de utilizador logado existir:
+                userInfoSpan.textContent = `Olá, ${loggedInUserName}!`; // Exibe a mensagem de boas-vindas.
+                loginBtn.style.display = 'none'; // Esconde o botão de login original.
+
+                // Cria o botão "Sair" (Logout).
+                const logoutButton = document.createElement('a');
+                logoutButton.href = "#"; // Define o href como '#' para que seja um link clicável, mas sem navegação.
+                logoutButton.classList.add('nav-btn'); // Adiciona a classe para estilização.
+                logoutButton.id = 'logout-btn'; // Define um ID para fácil referência.
+                logoutButton.textContent = "Sair"; // Define o texto do botão.
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault(); // Previne o comportamento padrão do link (recarregar a página).
+                    sessionStorage.removeItem('loggedInUserName'); // Remove o nome do utilizador da sessionStorage.
+                    localStorage.removeItem('isAdminLoggedIn'); // Remove o estado de administrador do localStorage.
+                    alert('Sessão encerrada.'); // Exibe um alerta de sessão encerrada.
+                    window.location.reload(); // Recarrega a página para atualizar a interface.
+                });
+                // Insere o botão de logout antes do botão de Contacto, mantendo a ordem visual.
+                mainNav.insertBefore(logoutButton, contactBtnStatic);
+
+
+                if (isAdminLoggedIn === 'true') { // Se o utilizador logado for um administrador:
+                    // Cria o botão "Administrador".
+                    const adminButton = document.createElement('a');
+                    adminButton.href = "admin.html"; // Define o href para a página de administração.
+                    adminButton.classList.add('nav-btn'); // Adiciona a classe para estilização.
+                    adminButton.id = 'admin-btn'; // Define um ID.
+                    adminButton.textContent = "Administrador"; // Define o texto do botão.
+                    // Insere o botão de administrador antes do botão de logout.
+                    mainNav.insertBefore(adminButton, logoutButton);
+                }
+            } else { // Se nenhum utilizador estiver logado:
+                userInfoSpan.textContent = ''; // Limpa o texto da informação do utilizador.
+                loginBtn.style.display = 'inline-block'; // Torna o botão de login visível.
+            }
+        }
+
+        // Função para carregar e renderizar o carrinho do localStorage
+        function loadAndRenderCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            renderCart(cart);
+        }
+
+        /**
+         * Renderiza os itens do carrinho na UI.
+         * @param {Array<Object>} cartItems - Um array de objetos representando os itens do carrinho.
+         */
+        function renderCart(cartItems) {
+            cartItemsContainer.innerHTML = ''; // Limpa os itens existentes na UI
+            let total = 0; // Inicializa o total do carrinho
+
+            if (cartItems.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+                checkoutButton.disabled = true;
+            } else {
+                emptyCartMessage.classList.add('hidden');
+                checkoutButton.disabled = false;
+                
+                cartItems.forEach(item => {
+                    const itemPrice = parseFloat(item.price || 0);
+                    const itemQuantity = parseInt(item.quantity || 1);
+                    const itemTotal = itemPrice * itemQuantity;
+                    total += itemTotal;
+
+                    const itemElement = `
+                        <div class="flex items-center space-x-4 border-b pb-4 last:border-b-0">
+                            <img src="${item.imageUrl || 'https://placehold.co/100x100/CCCCCC/666666?text=Produto'}" alt="${item.name}" class="w-24 h-24 rounded-lg object-cover">
+                            <div class="flex-grow">
+                                <h3 class="text-xl font-semibold text-gray-900">${item.name}</h3>
+                                <p class="text-gray-600">Tamanho: ${item.size || 'N/A'}</p>
+                                <p class="text-gray-800 font-bold">€${itemPrice.toFixed(2)}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" value="${itemQuantity}" min="1"
+                                    data-item-id="${item.id}"
+                                    class="w-16 text-center border rounded-lg py-1 px-2 focus:outline-none focus:ring-2 focus:ring-gray-300 quantity-input">
+                                <button data-item-id="${item.id}" class="text-red-500 hover:text-red-700 transition duration-300 remove-item-btn">Remover</button>
+                            </div>
+                        </div>
+                    `;
+                    cartItemsContainer.insertAdjacentHTML('beforeend', itemElement);
+                });
+            }
+
+            cartTotalSpan.textContent = `€${total.toFixed(2)}`;
+
+            // Adiciona event listeners para os inputs de quantidade e botões de remover
+            cartItemsContainer.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('change', updateCartItemQuantity);
+            });
+            cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
+                button.addEventListener('click', removeCartItem);
+            });
+        }
+
+        /**
+         * Atualiza a quantidade de um item específico no localStorage.
+         * @param {Event} event - O evento de mudança do input de quantidade.
+         */
+        function updateCartItemQuantity(event) {
+            const itemId = event.target.dataset.itemId;
+            const newQuantity = parseInt(event.target.value);
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let itemIndex = cart.findIndex(item => item.id === itemId);
+
+            if (itemIndex !== -1) {
+                if (newQuantity < 1) {
+                    // Se a nova quantidade for menor que 1, remove o item
+                    cart.splice(itemIndex, 1);
+                } else {
+                    // Atualiza a quantidade
+                    cart[itemIndex].quantity = newQuantity;
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadAndRenderCart(); // Recarrega e renderiza o carrinho
+            }
+        }
+
+        /**
+         * Remove um item do carrinho no localStorage.
+         * @param {Event} event - O evento de clique do botão de remover.
+         */
+        function removeCartItem(event) {
+            const itemId = event.target.dataset.itemId;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Filtra o array para remover o item com o ID correspondente
+            cart = cart.filter(item => item.id !== itemId);
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadAndRenderCart(); // Recarrega e renderiza o carrinho
+        }
+
+        // --- Funções de Feedback Visual ---
+        function showFeedback(message, type) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.classList.remove('hidden', 'success', 'error');
+            feedbackMessage.classList.add(type);
+            setTimeout(() => {
+                feedbackMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        function hideFeedback() {
+            feedbackMessage.classList.add('hidden');
+        }
+
+        // Carrega o carrinho quando a página é totalmente carregada
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAndRenderCart();
+            updateLoginDisplay(); // Chama a função para atualizar a exibição ao carregar a página.
+        });
+
+        // Lógica para abrir e fechar o modal de Finalizar Compra
+        checkoutButton.addEventListener('click', () => {
+            const loggedInUserName = sessionStorage.getItem('loggedInUserName');
+            if (!loggedInUserName) {
+                showFeedback('Precisa de fazer login ou criar uma conta para finalizar a compra.', 'error');
+                return; // Impede a abertura do modal
+            }
+            checkoutModal.classList.add('show');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            checkoutModal.classList.remove('show');
+            hideFeedback(); // Esconde qualquer mensagem de feedback ao fechar o modal
+        });
+
+        // Fechar modal ao clicar fora dele
+        checkoutModal.addEventListener('click', (event) => {
+            if (event.target === checkoutModal) {
+                checkoutModal.classList.remove('show');
+                hideFeedback(); // Esconde qualquer mensagem de feedback ao fechar o modal
+            }
+        });
+
+        // Lógica para selecionar método de pagamento
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove 'selected' de todos e adiciona ao clicado
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                option.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // Lógica para o botão "Confirmar Pagamento"
+        confirmPaymentButton.addEventListener('click', () => {
+            const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked');
+            if (selectedPaymentMethod) {
+                const methodName = selectedPaymentMethod.value;
+                alert(`Pagamento com ${methodName} confirmado! A sua encomenda foi realizada com sucesso.`);
+                
+                // Limpar o carrinho após a "compra"
+                localStorage.removeItem('cart');
+                loadAndRenderCart(); // Atualiza a UI para mostrar o carrinho vazio
+
+                // Fechar o modal
+                checkoutModal.classList.remove('show');
+
+                // Opcional: Redirecionar para uma página de confirmação ou para o início
+                // window.location.href = 'pagina-confirmacao.html';
+            } else {
+                alert('Por favor, selecione um método de pagamento.');
+            }
+        });
+
+    </script>
+</body>
+</html>

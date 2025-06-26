@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GMS - Sweat Branca Essencial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Estilos personalizados para os botões */
+        .btn-primary {
+            background-color: #333;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background-color: #555;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .nav-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: #4B5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap; /* Garante que os botões não quebrem linha */
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+        .nav-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilo para o seletor de tamanhos */
+        .size-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .size-option {
+            background-color: #e5e7eb;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .size-option:hover {
+            background-color: #d1d5db;
+            border-color: #9ca3af;
+        }
+        .size-option.selected {
+            background-color: #333;
+            color: #fff;
+            border-color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilos da Galeria de Imagens */
+        .image-gallery .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        .image-gallery .thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .image-gallery .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .image-gallery .thumbnail:hover {
+            border-color: #9ca3af;
+            transform: scale(1.05);
+        }
+        .image-gallery .thumbnail.active {
+            border-color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        /* Mensagens de feedback */
+        .feedback-message {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        .feedback-message.success {
+            background-color: #d1fae5; /* green-100 */
+            color: #065f46; /* green-800 */
+        }
+        .feedback-message.error {
+            background-color: #fee2e2; /* red-100 */
+            color: #991b1b; /* red-800 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <header class="bg-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">GMS</h1>
+            <nav class="space-x-2 flex items-center" id="main-nav">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="sobre.html" class="nav-btn">Sobre</a>
+                <a href="carrinho.html" class="nav-btn">Carrinho</a>
+                
+                <span id="user-info" class="text-gray-700 font-semibold ml-4 mr-2"></span>
+                <a href="login.html" class="nav-btn" id="login-btn">Login</a>
+                
+                <a href="contacto.html" class="nav-btn" id="contact-btn-static">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-16 p-4 bg-white rounded-3xl shadow-lg flex flex-col md:flex-row items-center md:items-start gap-8">
+        <div class="md:w-1/2">
+            <div class="image-gallery">
+                <img id="mainSweatImage" src="https://placehold.co/600x600/E0E0E0/333333?text=Sweat+Branca+1" alt="Sweat Branca Essencial - Vista Principal" class="main-image" />
+                <div class="thumbnails">
+                    <img src="https://placehold.co/100x100/E0E0E0/333333?text=Sweat+Branca+1" alt="Miniatura 1" class="thumbnail active" data-full-src="https://placehold.co/600x600/E0E0E0/333333?text=Sweat+Branca+1" />
+                    <img src="https://placehold.co/100x100/CCCCCC/666666?text=Sweat+Branca+2" alt="Miniatura 2" class="thumbnail" data-full-src="https://placehold.co/600x600/CCCCCC/666666?text=Sweat+Branca+2" />
+                    <img src="https://placehold.co/100x100/BBBBBB/555555?text=Sweat+Branca+3" alt="Miniatura 3" class="thumbnail" data-full-src="https://placehold.co/600x600/BBBBBB/555555?text=Sweat+Branca+3" />
+                </div>
+            </div>
+        </div>
+        <div class="md:w-1/2 text-center md:text-left">
+            <h2 class="text-4xl font-extrabold mb-4 text-gray-900" id="product-name">Sweat Branca Essencial</h2>
+            <p class="text-lg text-gray-700 mb-6" id="product-description">Esta sweat branca é a peça perfeita para o seu guarda-roupa de inverno. Feita com tecido macio e aconchegante, oferece conforto e estilo para o dia a dia. Ideal para combinar com qualquer look.</p>
+            <p class="text-4xl font-extrabold text-gray-900 mb-6" id="product-price" data-price="39.99">€39.99</p>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">Selecione o Tamanho:</h3>
+                <div class="size-selector" id="sizeSelector">
+                    <span class="size-option" data-size="XS">XS</span>
+                    <span class="size-option" data-size="S">S</span>
+                    <span class="size-option" data-size="M">M</span>
+                    <span class="size-option" data-size="L">L</span>
+                    <span class="size-option" data-size="XL">XL</span>
+                    <span class="size-option" data-size="XXL">XXL</span>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <button id="addToCartButton" class="btn-primary">Adicionar ao Carrinho</button>
+                <a href="sweats.html" class="btn-primary bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-900 border border-gray-300">Voltar às Sweats</a>
+            </div>
+            <div id="feedbackMessage" class="feedback-message hidden"></div>
+        </div>
+    </main>
+
+    <footer class="bg-white mt-20 py-8 shadow-inner text-center text-gray-600 text-sm">
+        © 2025 GMS. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        // --- Lógica de Login e Nome do Utilizador ---
+        const mainNav = document.getElementById('main-nav');
+        const loginBtn = document.getElementById('login-btn');
+        const userInfoSpan = document.getElementById('user-info');
+        // Usamos um ID específico para o botão de Contacto, pois ele é o ponto de referência final
+        const contactBtnStatic = document.getElementById('contact-btn-static');
+
+        function updateLoginDisplay() {
+            const loggedInUserName = sessionStorage.getItem('loggedInUserName');
+            const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn');
+
+            // Remove botões de logout e admin existentes para evitar duplicatas
+            let existingLogoutBtn = document.getElementById('logout-btn');
+            if (existingLogoutBtn) { existingLogoutBtn.remove(); }
+            let existingAdminBtn = document.getElementById('admin-btn');
+            if (existingAdminBtn) { existingAdminBtn.remove(); }
+
+            if (loggedInUserName) {
+                userInfoSpan.textContent = `Olá, ${loggedInUserName}!`;
+                loginBtn.style.display = 'none'; // Esconde o botão de login
+
+                const logoutButton = document.createElement('a');
+                logoutButton.href = "#";
+                logoutButton.classList.add('nav-btn');
+                logoutButton.id = 'logout-btn';
+                logoutButton.textContent = "Sair";
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('loggedInUserName');
+                    localStorage.removeItem('isAdminLoggedIn');
+                    alert('Sessão encerrada.');
+                    window.location.reload();
+                });
+                // Insere o botão de logout *antes* do botão de contacto estático
+                mainNav.insertBefore(logoutButton, contactBtnStatic);
+
+                if (isAdminLoggedIn === 'true') {
+                    const adminButton = document.createElement('a');
+                    adminButton.href = "admin.html";
+                    adminButton.classList.add('nav-btn');
+                    adminButton.id = 'admin-btn';
+                    adminButton.textContent = "Administrador";
+                    // Insere o botão de administrador *antes* do botão de logout
+                    // Se logoutButton não existir (o que não deve acontecer aqui), ele inserirá antes de contactBtnStatic
+                    mainNav.insertBefore(adminButton, logoutButton);
+                }
+            } else {
+                userInfoSpan.textContent = '';
+                loginBtn.style.display = 'inline-block'; // Mostra o botão de login
+            }
+        }
+
+        // --- Lógica de Produto e Carrinho ---
+        const addToCartButton = document.getElementById('addToCartButton');
+        const sizeOptions = document.querySelectorAll('.size-option');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const productName = document.getElementById('product-name').textContent;
+        const productPrice = parseFloat(document.getElementById('product-price').dataset.price);
+        const mainImage = document.getElementById('mainSweatImage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+
+        let selectedSize = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chama a função para atualizar a navegação no carregamento da página
+            updateLoginDisplay();
+
+            // --- Funções da Galeria de Imagens ---
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    this.classList.add('active');
+                    mainImage.src = this.dataset.fullSrc;
+                });
+            });
+
+            // --- Lógica de Seleção de Tamanhos ---
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSize = this.dataset.size;
+                    console.log('Tamanho selecionado:', selectedSize);
+                    hideFeedback();
+                });
+            });
+
+            // --- Função para mostrar feedback ao utilizador ---
+            function showFeedback(message, type) {
+                feedbackMessage.textContent = message;
+                feedbackMessage.classList.remove('hidden', 'success', 'error');
+                feedbackMessage.classList.add(type);
+                setTimeout(() => {
+                    feedbackMessage.classList.add('hidden');
+                }, 3000);
+            }
+
+            function hideFeedback() {
+                feedbackMessage.classList.add('hidden');
+            }
+
+            // --- Função para Adicionar ao Carrinho (usando localStorage) ---
+            function addToCart() {
+                if (!selectedSize) {
+                    showFeedback('Por favor, selecione um tamanho.', 'error');
+                    return;
+                }
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                const itemId = `${productName.replace(/\s/g, '-')}-${selectedSize}`;
+
+                let existingItem = cart.find(item => item.id === itemId);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                    showFeedback('Quantidade atualizada no carrinho!', 'success');
+                } else {
+                    const newItem = {
+                        id: itemId,
+                        name: productName,
+                        price: productPrice,
+                        size: selectedSize,
+                        imageUrl: mainImage.src,
+                        quantity: 1
+                    };
+                    cart.push(newItem);
+                    showFeedback('Item adicionado ao carrinho!', 'success');
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                console.log("Carrinho atualizado no localStorage:", cart);
+            }
+
+            // --- Listener para o botão "Adicionar ao Carrinho" ---
+            addToCartButton.addEventListener('click', addToCart);
+        });
+    </script>
+</body>
+</html>
