@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMS - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6; /* Cor de fundo similar ao index */
+            display: flex;
+            flex-direction: column; /* Permite que o header e o container fiquem em coluna */
+            min-height: 100vh; /* Garante que ocupa a altura total da viewport */
+        }
+        .header-gms {
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-gms .max-w-6xl {
+            max-width: 72rem; /* Valor exato do Tailwind para max-w-6xl */
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-gms h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0;
+        }
+        .nav-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: #4B5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+        .nav-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-main-content {
+            flex-grow: 1; /* Faz com que o conteúdo principal ocupe o espaço restante */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 2.5rem;
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .login-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 2rem;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            color: #374151;
+        }
+        .login-container input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .login-container button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .login-container button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+        .message {
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .error-message {
+            color: #ef4444;
+        }
+        .success-message {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        .alt-links {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        .alt-links a {
+            color: #4299e1;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+        .alt-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-gms">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1>GMS</h1>
+            <nav class="space-x-2">
+                <a href="index.html" class="nav-btn">Início</a>
+                <a href="sobre.html" class="nav-btn">Sobre</a>
+                <a href="carrinho.html" class="nav-btn">Carrinho</a>
+                <a href="login.html" class="nav-btn active">Login</a>
+                <a href="contacto.html" class="nav-btn">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="login-main-content">
+        <div class="login-container">
+            <h2>Iniciar Sessão</h2>
+            <form id="login-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required autocomplete="username">
+                <label for="password">Palavra-passe:</label>
+                <input type="password" id="password" required autocomplete="current-password">
+                <p id="login-message" class="message"></p>
+                <button type="submit">Entrar</button>
+            </form>
+            <div class="alt-links">
+                <a href="criar-conta.html">Criar Conta</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginMessage = document.getElementById('login-message');
+
+            // Limpa mensagens anteriores
+            loginMessage.textContent = '';
+            loginMessage.classList.remove('error-message', 'success-message');
+
+            // Tenta obter os dados de todos os utilizadores registados do localStorage
+            const registeredUsersJSON = localStorage.getItem('registeredUsers');
+            const registeredUsers = registeredUsersJSON ? JSON.parse(registeredUsersJSON) : [];
+
+            // 1. Verifica se é o login de administrador (hardcoded)
+            if (email === 'gmsstore294@gmail.com' && password === '_gmsstore294_') {
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                sessionStorage.setItem('loggedInUserName', 'Administrador'); // Armazena o nome "Administrador"
+                loginMessage.textContent = 'Login de Administrador bem-sucedido! Redirecionando...';
+                loginMessage.classList.add('success-message');
+
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redireciona para a página inicial
+                }, 1500);
+            } 
+            // 2. Verifica se é um login de utilizador normal
+            else {
+                // Procura pelo utilizador nas contas registadas
+                const foundUser = registeredUsers.find(user => user.email === email && user.password === password);
+
+                if (foundUser) {
+                    // Login de utilizador normal bem-sucedido
+                    localStorage.setItem('isAdminLoggedIn', 'false'); // Não é um login de admin
+                    sessionStorage.setItem('loggedInUserName', foundUser.name); // Armazena o nome do utilizador
+                    loginMessage.textContent = 'Login bem-sucedido! Redirecionando para a página inicial...';
+                    loginMessage.classList.add('success-message');
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; // Redireciona para a página inicial
+                    }, 1500);
+                } else {
+                    // Credenciais incorretas (para admin ou utilizador normal)
+                    localStorage.removeItem('isAdminLoggedIn'); // Garante que a flag é removida em caso de falha
+                    sessionStorage.removeItem('loggedInUserName'); // Limpa qualquer nome armazenado em caso de falha no login
+                    loginMessage.textContent = 'Email ou palavra-passe incorretos.';
+                    loginMessage.classList.add('error-message');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
